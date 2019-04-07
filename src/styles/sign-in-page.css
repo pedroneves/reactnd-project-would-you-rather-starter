@@ -1,0 +1,16 @@
+.sign-in-page {
+	height: 100vh;
+	width: 100vw;
+}
+	.sign-in-page .users-card {
+		max-height: 30vh;
+		overflow-y: auto;
+		width: 100%;
+	}
+		.sign-in-page .users-card .who-are-you {
+			text-align: center;
+		}
+
+	.sign-in-page .sign-in-row{
+		width: 100%;
+	}

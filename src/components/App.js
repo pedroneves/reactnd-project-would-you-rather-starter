@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux'
 import { Route } from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
 
 import SignInPage from './SignInPage';
 
@@ -15,4 +16,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default connect()(App);
