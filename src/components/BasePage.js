@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 

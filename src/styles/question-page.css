@@ -1,0 +1,21 @@
+.question-page {}
+
+	.question-page .title {
+		margin-top: 30px;
+	}
+
+	.question-page .option {
+		margin: 0px;
+		margin-top: 30px;
+		margin-bottom: 30px;
+		font-size: 1.8em;
+		text-align: center;
+	}
+
+	.question-page .option-or {
+		margin: 0px;
+		margin-top: 40px;
+		margin-bottom: 30px;
+		font-size: 1.2em;
+		text-align: center;
+	}
