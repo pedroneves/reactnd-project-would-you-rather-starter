@@ -1,4 +1,4 @@
-import { Row } from 'antd';
+import { Row, Col } from 'antd';
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
@@ -10,10 +10,16 @@ class BasePage extends Component {
 		return (
 			<div>
 				<Row type="flex" justify="center">
-					<h1>Hello, username</h1>
+					<Col>
+						<h1>Hello, username</h1>
+					</Col>
 				</Row>
 
-				<Nav />
+				<Row>
+					<Col span={10} offset={7}>
+						<Nav />
+					</Col>
+				</Row>
 
 				<Route exact path='/question/:id' component={QuestionPage}></Route>
 			</div>
