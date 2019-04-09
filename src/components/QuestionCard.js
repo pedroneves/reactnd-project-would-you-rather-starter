@@ -28,7 +28,7 @@ class QuestionCard extends Component {
 						<p className="option-or">OR</p>
 					</Col>
 					<Col md={6} sm={8} xs={24}>
-						<Tooltip title="You voted this" visible={true}>
+						<Tooltip title="You voted this" visible={votedTwo}>
 							<p className="option">{optionTwo}</p>
 						</Tooltip>
 					</Col>
