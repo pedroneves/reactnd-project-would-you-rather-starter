@@ -1,20 +1,55 @@
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import React, { Component, Fragment } from 'react';
 
-import { Row, Col, Card } from 'antd';
+import Actions from '../actions';
+
+import SignInUserCard from './SignInUserCard';
+import { Card, Col, Icon, Row, Spin } from 'antd';
 
 import '../styles/sign-in-page.css'
 
 class SignInPage extends Component {
-	renderAvailableUsers () {
-		const { users } = this.props;
+	componentDidMount () {
+		this.props.onMount();
+	}
 
-		if (!users || users.length === 0) {
+	signUserIn = (user) => {
+
+	}
+
+	renderLoadingIcon () {
+		const icon = (<Icon type="loading" style={{ fontSize: 24 }} spin />)
+		return (
+			<div className="loading">
+				<Spin indicator={icon}></Spin>
+			</div>
+		);
+	}
+
+	renderAvailableUsers () {
+		let { users, onSignIn } = this.props;
+
+		if (users.isLoading) {
+			return this.renderLoadingIcon()
+		}
+
+		if (!users || !users.ids || users.ids.length === 0) {
 			return (<p style={{textAlign: 'center'}}>No users available!</p>)
 		}
 
 		return (
-			<Fragment>{ users.map(user => <div>Some user</div>) }</Fragment>
+			<Fragment>
+				{
+					users.ids.map(id => {
+						return <SignInUserCard
+							key={id}
+							user={users.byId[id]}
+							onSelect={onSignIn}
+						/>
+					})
+				}
+			</Fragment>
 		)
 	}
 
@@ -31,7 +66,7 @@ class SignInPage extends Component {
 
 				<Row type="flex" justify="center" className="sign-in-row">
 					<Col lg={10} md={12} sm={18} xs={23}>
-						<Card className="users-card">
+						<Card className="users-card-box">
 							<h2 className="who-are-you">Who are you?</h2>
 							{this.renderAvailableUsers()}
 						</Card>
@@ -50,9 +85,19 @@ class SignInPage extends Component {
 	}
 }
 
+SignInPage.propTypes = {
+	users: PropTypes.object.isRequired
+}
+
 function mapStateToProps (state) {
 	const { users } = state;
 	return { users };
 }
 
-export default connect(mapStateToProps)(SignInPage);
+function mapDispatchToProps (dispatch) {
+	const onMount = () => dispatch(Actions.Users.handleGetUsers())
+	const onSignIn = (user) => dispatch(Actions.AuthedUser.handleSignIn(user))
+	return { onMount, onSignIn }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
