@@ -1,7 +1,8 @@
 import * as Users from './users';
+import * as AuthedUser from './authed-user';
 
 const actions = {
-	Users
+	Users, AuthedUser
 }
 
 export default actions
