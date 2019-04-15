@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
 import { Row, Col } from 'antd';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Nav extends Component {
 	render() {
@@ -8,10 +9,10 @@ class Nav extends Component {
 		return (
 			<Row style={{marginTop: '20px'}} type="flex" justify="space-around">
 				<Col style={style} >
-					<p>Unanswered</p>
+					<Link to="/unanswered">Unanswered</Link>
 				</Col>
 				<Col style={style} >
-					<p>Answered</p>
+					<Link to="/answered">Answered</Link>
 				</Col>
 				<Col style={style} >
 					<p>New</p>

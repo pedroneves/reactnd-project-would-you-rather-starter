@@ -1,9 +1,12 @@
 import { Row, Col } from 'antd';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Nav from './Nav';
 import QuestionPage from './QuestionPage';
+import AnsweredPage from './AnsweredPage';
+import UnansweredPage from './UnansweredPage';
 
 class BasePage extends Component {
 	render () {
@@ -11,7 +14,7 @@ class BasePage extends Component {
 			<div>
 				<Row type="flex" justify="center">
 					<Col>
-						<h1>Hello, username</h1>
+						<h1>Hello, {this.props.authedUser.name}</h1>
 					</Col>
 				</Row>
 
@@ -21,10 +24,21 @@ class BasePage extends Component {
 					</Col>
 				</Row>
 
-				<Route exact path='/question/:id' component={QuestionPage}></Route>
+				<Switch>
+					<Route exact path='/question/:id' component={QuestionPage} />
+					<Route exact path='/unanswered' component={UnansweredPage} />
+					<Route exact path='/answered' component={AnsweredPage} />
+					<Route exact path='/' component={UnansweredPage} />
+					<Route path='/' component={UnansweredPage} />
+				</Switch>
 			</div>
 		)
 	}
 }
 
-export default BasePage;
+const mapStateToProps = (state) => {
+	const { authedUser } = state;
+	return { authedUser };
+}
+
+export default connect(mapStateToProps)(BasePage);
