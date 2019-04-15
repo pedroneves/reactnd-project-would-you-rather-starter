@@ -1,15 +1,17 @@
-export const SIGN_USER_IN = 'SIGN_USER_IN';
-export const SIGN_USER_OUT = 'SIGN_USER_OUT';
+import { saveAuthedUser, clearAuthedUser, hasAuthedUser, getAuthedUser } from '../local-storage';
 
-function signIn (user) {
+export const SET_AUTHED_USER = 'SET_AUTHED_USER';
+export const CLEAR_AUTHED_USER = 'CLEAR_AUTHED_USER';
+
+function set (user) {
 	return {
-		type: SIGN_USER_IN,
+		type: SET_AUTHED_USER,
 		user
 	}
 }
 
-function signOut () {
-	return { type: SIGN_USER_OUT }
+function clear () {
+	return { type: CLEAR_AUTHED_USER }
 }
 
 /**
@@ -20,16 +22,23 @@ function signOut () {
 
 export function handleSignIn (user) {
 	return dispatch => {
-		dispatch(
-			signIn(user)
-		)
+		saveAuthedUser(user);
+		dispatch(set(user));
 	}
 }
 
 export function handleSignOut () {
 	return dispatch => {
-		dispatch(
-			signOut()
-		)
+		clearAuthedUser();
+		dispatch(clear());
+	}
+}
+
+export function handleVerifyAuthedUser () {
+	return dispatch => {
+		if (hasAuthedUser()) {
+			const user = getAuthedUser();
+			dispatch(set(user));
+		}
 	}
 }
