@@ -45,7 +45,7 @@ class BasePage extends Component {
 				<Switch>
 					<Route exact path='/question/:id' component={QuestionPage} />
 					<Route exact path='/unanswered' render={this.renderUnansweredPage} />
-					<Route exact path='/answered' component={AnsweredPage} />
+					<Route exact path='/answered' render={this.renderAnsweredPage} />
 					<Route exact path='/' component={UnansweredPage} />
 					<Route path='/' component={UnansweredPage} />
 				</Switch>
@@ -65,12 +65,22 @@ class BasePage extends Component {
 		return <UnansweredPage questions={unanswered} />
 	}
 
+	renderAnsweredPage = () => {
+		const answeredIds = Object.keys(this.props.authedUser.answers);
+		const answered = Object.values(this.props.questions.byId)
+			.filter(question => answeredIds.includes(question.id))
+			.map(this.parseQuestion)
+			.sort((a, b) => b.timestamp - a.timestamp)
+
+		return <AnsweredPage questions={answered} />
+	}
+
 	render () {
 		return (
 			<div className="base">
 				<Row type="flex" justify="center">
 					<Col>
-						<h1>Hello, {this.props.authedUser.name}</h1>
+						<h1>Hello, {this.props.authedUser.name.split(' ')[0]}!</h1>
 					</Col>
 				</Row>
 
