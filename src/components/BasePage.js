@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Icon, Spin } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,9 @@ import AnsweredPage from './AnsweredPage';
 import UnansweredPage from './UnansweredPage';
 
 import { handleGetUsers } from '../actions/users';
-import { handleFetchQuestions } from '../actions/questions'
+import { handleFetchQuestions } from '../actions/questions';
+
+import '../styles/base.css';
 
 class BasePage extends Component {
 	componentDidMount () {
@@ -18,9 +20,54 @@ class BasePage extends Component {
 		this.props.fetchQuestions();
 	}
 
+	parseQuestion = (question) => {
+		const clone = Object.assign({}, question);
+		clone.author = Object.assign({}, this.props.users.byId[question.author]);
+		return clone;
+	}
+
+	renderLoadingIcon () {
+		const icon = (<Icon type="loading" style={{ fontSize: 24 }} spin />)
+		return (
+			<div className="loading-container">
+				<Spin indicator={icon}></Spin>
+			</div>
+		);
+	}
+
+	renderSubsection () {
+		const isUsersLoaded = this.props.users.isSuccess;
+		const isQuestionsLoaded = this.props.questions.isSuccess;
+		const isLoaded = isUsersLoaded || isQuestionsLoaded;
+
+		if (isLoaded) {
+			return (
+				<Switch>
+					<Route exact path='/question/:id' component={QuestionPage} />
+					<Route exact path='/unanswered' render={this.renderUnansweredPage} />
+					<Route exact path='/answered' component={AnsweredPage} />
+					<Route exact path='/' component={UnansweredPage} />
+					<Route path='/' component={UnansweredPage} />
+				</Switch>
+			)
+		}
+
+		return this.renderLoadingIcon()
+	}
+
+	renderUnansweredPage = () => {
+		const answeredIds = Object.keys(this.props.authedUser.answers);
+		const unanswered = Object.values(this.props.questions.byId)
+			.filter(question => !answeredIds.includes(question.id))
+			.map(this.parseQuestion)
+			.sort((a, b) => b.timestamp - a.timestamp)
+
+		return <UnansweredPage questions={unanswered} />
+	}
+
 	render () {
 		return (
-			<div>
+			<div className="base">
 				<Row type="flex" justify="center">
 					<Col>
 						<h1>Hello, {this.props.authedUser.name}</h1>
@@ -33,21 +80,15 @@ class BasePage extends Component {
 					</Col>
 				</Row>
 
-				<Switch>
-					<Route exact path='/question/:id' component={QuestionPage} />
-					<Route exact path='/unanswered' component={UnansweredPage} />
-					<Route exact path='/answered' component={AnsweredPage} />
-					<Route exact path='/' component={UnansweredPage} />
-					<Route path='/' component={UnansweredPage} />
-				</Switch>
+				{this.renderSubsection()}
 			</div>
 		)
 	}
 }
 
 const mapStateToProps = (state) => {
-	const { authedUser } = state;
-	return { authedUser };
+	const { authedUser, questions, users } = state;
+	return { authedUser, questions, users };
 }
 
 const mapDispatchToProps = dispatch => {
