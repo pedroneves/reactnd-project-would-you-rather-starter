@@ -4,6 +4,11 @@
 		margin-top: 30px;
 	}
 
+	.question-page .option-container {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
 	.question-page .option {
 		margin: 0px;
 		margin-top: 30px;
@@ -18,4 +23,11 @@
 		margin-bottom: 30px;
 		font-size: 1.2em;
 		text-align: center;
+	}
+
+	.question-page .author-container {
+		margin-top: 50px;
+	}
+	.question-page .author-container h4 {
+		margin-bottom: 10px !important;
 	}
