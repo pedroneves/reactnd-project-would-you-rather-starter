@@ -28,14 +28,10 @@ export function handleGetUsers () {
 
 		API.getUsers()
 			.then(users => {
-				dispatch(
-					getUsersSuccess(users)
-				)
+				dispatch(getUsersSuccess(users))
 			})
 			.catch(error => {
-				dispatch(
-					getUsersFailed(error)
-				)
+				dispatch(getUsersFailed(error))
 			})
 	}
 }

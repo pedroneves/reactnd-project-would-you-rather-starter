@@ -1,6 +1,7 @@
 import { Row, Col } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { Route, Switch } from 'react-router-dom';
 
 import Nav from './Nav';
@@ -8,7 +9,15 @@ import QuestionPage from './QuestionPage';
 import AnsweredPage from './AnsweredPage';
 import UnansweredPage from './UnansweredPage';
 
+import { handleGetUsers } from '../actions/users';
+import { handleFetchQuestions } from '../actions/questions'
+
 class BasePage extends Component {
+	componentDidMount () {
+		this.props.fetchUsers();
+		this.props.fetchQuestions();
+	}
+
 	render () {
 		return (
 			<div>
@@ -41,4 +50,11 @@ const mapStateToProps = (state) => {
 	return { authedUser };
 }
 
-export default connect(mapStateToProps)(BasePage);
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators({
+		fetchUsers: handleGetUsers,
+		fetchQuestions: handleFetchQuestions
+	}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BasePage);
