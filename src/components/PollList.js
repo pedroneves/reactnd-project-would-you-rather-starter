@@ -1,14 +1,17 @@
+import { Card } from 'antd'
 import React, { Component } from 'react';
+
+import PollItem from './PollItem';
 
 class PollList extends Component {
 	render () {
 		const { questions } = this.props;
 		return (
-			<div>
+			<Card>
 				{questions.map(question => {
-					return <div key={question.id}>{question.author.name} {question.timestamp}</div>
+					return <PollItem key={question.id} question={question} />
 				})}
-			</div>
+			</Card>
 		)
 	}
 }

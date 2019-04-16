@@ -1,4 +1,6 @@
-.base {}
+.base {
+	padding-top: 20px;
+}
 	.base .loading-container {
 		display: flex;
 		justify-content: center;
@@ -6,3 +8,27 @@
 
 		min-height: 25vh
 	}
+
+	.base .poll-item {
+		margin: 0px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+
+		padding: 10px;
+
+		border-style: solid;
+		border-radius: 3px;
+		border-width: 1px;
+		border-color: transparent;
+	}
+		.base .poll-item .poll-title {
+			font-size: 1.05rem;
+		}
+		.base .poll-item .poll-date {
+			font-size: 0.95rem;
+			color: #888;
+		}
+		.base .poll-item:hover {
+			cursor: pointer;
+			border-color: #eee;
+		}

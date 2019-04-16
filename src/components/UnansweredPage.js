@@ -7,11 +7,11 @@ class UnansweredPage extends Component {
 	render () {
 		return (
 			<Row>
-				<Col xs={1} sm={4}></Col>
-				<Col xs={22} sm={16}>
+				<Col xs={1} sm={4} md={6}></Col>
+				<Col xs={22} sm={16} md={12}>
 					<PollList questions={this.props.questions} />
 				</Col>
-				<Col xs={1} sm={4}></Col>
+				<Col xs={1} sm={4} md={6}></Col>
 			</Row>
 		)
 	}
