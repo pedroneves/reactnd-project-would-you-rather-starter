@@ -7,7 +7,7 @@ class Nav extends Component {
 		const style = { textAlign: 'center' }
 
 		return (
-			<Row style={{marginTop: '20px'}} type="flex" justify="space-around">
+			<Row style={{marginTop: '20px', marginBottom: '20px'}} type="flex" justify="space-around">
 				<Col style={style} >
 					<Link to="/unanswered">Unanswered</Link>
 				</Col>
