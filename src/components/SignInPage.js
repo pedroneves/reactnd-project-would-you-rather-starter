@@ -14,10 +14,6 @@ class SignInPage extends Component {
 		this.props.onMount();
 	}
 
-	signUserIn = (user) => {
-
-	}
-
 	renderLoadingIcon () {
 		const icon = (<Icon type="loading" style={{ fontSize: 24 }} spin />)
 		return (
