@@ -1,3 +1,4 @@
+import * as API from '../api';
 import { saveAuthedUser, clearAuthedUser, hasAuthedUser, getAuthedUser } from '../local-storage';
 
 export const SET_AUTHED_USER = 'SET_AUTHED_USER';
@@ -39,6 +40,20 @@ export function handleVerifyAuthedUser () {
 		if (hasAuthedUser()) {
 			const user = getAuthedUser();
 			dispatch(set(user));
+		}
+	}
+}
+
+export function handleReloadAuthedUser () {
+	return dispatch => {
+		if (hasAuthedUser()) {
+			const user = getAuthedUser();
+
+			API.getUsers()
+				.then(users => {
+					const authedUser = users[user.id];
+					dispatch(set(authedUser))
+				})
 		}
 	}
 }
