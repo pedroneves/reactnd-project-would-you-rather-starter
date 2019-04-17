@@ -1,8 +1,8 @@
-import { Row, Col, Icon, Spin } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Route, Switch } from 'react-router-dom';
+import { Row, Col, Icon, Spin, Button } from 'antd';
 
 import Nav from './Nav';
 import QuestionPage from './QuestionPage';
@@ -10,6 +10,7 @@ import AnsweredPage from './AnsweredPage';
 import UnansweredPage from './UnansweredPage';
 
 import { handleGetUsers } from '../actions/users';
+import { handleSignOut } from '../actions/authed-user';
 import { handleFetchQuestions } from '../actions/questions';
 
 import '../styles/base.css';
@@ -24,6 +25,11 @@ class BasePage extends Component {
 		const clone = Object.assign({}, question);
 		clone.author = Object.assign({}, this.props.users.byId[question.author]);
 		return clone;
+	}
+
+	handleSignOut = (event) => {
+		event.preventDefault();
+		this.props.signout();
 	}
 
 	renderLoadingIcon () {
@@ -84,6 +90,12 @@ class BasePage extends Component {
 					</Col>
 				</Row>
 
+				<Row type="flex" justify="center">
+					<Col>
+						<Button onClick={this.handleSignOut} size={'small'}>Sign out</Button>
+					</Col>
+				</Row>
+
 				<Row>
 					<Col span={10} offset={7}>
 						<Nav />
@@ -103,6 +115,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
+		signout: handleSignOut,
 		fetchUsers: handleGetUsers,
 		fetchQuestions: handleFetchQuestions
 	}, dispatch)
