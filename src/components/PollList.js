@@ -5,7 +5,7 @@ import PollItem from './PollItem';
 
 class PollList extends Component {
 	render () {
-		const { questions } = this.props;
+		const { questions=[] } = this.props;
 		return (
 			<Card>
 				{questions.map(question => {
