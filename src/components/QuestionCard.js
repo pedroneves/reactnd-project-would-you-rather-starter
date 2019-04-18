@@ -89,7 +89,7 @@ class QuestionCard extends Component {
 					</Col>
 				</Row>
 				<Row className="author-container" type="flex" justify="center">
-					<Col xl={8} lg={12} md={14} sm={18} xs={23}>
+					<Col sm={20} xs={24}>
 						<Card>
 							<h4>Posted By</h4>
 
