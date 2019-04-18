@@ -15,7 +15,7 @@ class Nav extends Component {
 					<Link to="/answered">Answered</Link>
 				</Col>
 				<Col style={style} >
-					<p>New</p>
+					<Link to="/add">New</Link>
 				</Col>
 				<Col style={style} >
 					<p>Leaderboard</p>

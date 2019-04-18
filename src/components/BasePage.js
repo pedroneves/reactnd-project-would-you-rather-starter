@@ -8,6 +8,7 @@ import Nav from './Nav';
 import QuestionPage from './QuestionPage';
 import AnsweredPage from './AnsweredPage';
 import UnansweredPage from './UnansweredPage';
+import NewQuestionPage from './NewQuestionPage';
 
 import { handleGetUsers } from '../actions/users';
 import { handleSignOut } from '../actions/authed-user';
@@ -52,6 +53,7 @@ class BasePage extends Component {
 					<Route exact path='/question/:id' component={QuestionPage} />
 					<Route exact path='/unanswered' render={this.renderUnansweredPage} />
 					<Route exact path='/answered' render={this.renderAnsweredPage} />
+					<Route exact path='/add' render={this.renderNewQuestionPage} />
 					<Route exact path='/' component={UnansweredPage} />
 					<Route path='/' component={UnansweredPage} />
 				</Switch>
@@ -79,6 +81,10 @@ class BasePage extends Component {
 			.sort((a, b) => b.timestamp - a.timestamp)
 
 		return <AnsweredPage questions={answered} />
+	}
+
+	renderNewQuestionPage = () => {
+		return <NewQuestionPage />
 	}
 
 	render () {
