@@ -15,7 +15,7 @@ class PollItem extends Component {
 		return (
 			<div onClick={this.handleSelect} className="poll-item">
 				<p className="poll-title">Click to see what {question.author.name} has asked :D</p>
-				<p className="poll-date">Asked at {Moment(question.timestamp).format('MM-DD-YYYY HH:mm')}</p>
+				<p className="poll-date">Asked at {Moment(question.timestamp).format('MM-DD-YYYY HH:mm:ss')}</p>
 			</div>
 		)
 	}
