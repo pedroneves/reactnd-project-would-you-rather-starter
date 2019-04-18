@@ -1,19 +1,51 @@
-import {
-	FETCH_QUESTIONS_START,
-	FETCH_QUESTIONS_SUCCESS,
-	FETCH_QUESTIONS_FAIL
-} from '../actions/questions'
+import * as Actions from '../actions/questions'
 
 const INITIAL_STATE = {
 	isLoading: false,
 	isLoaded: false,
 	isFail: false,
 	isSuccess: false,
+	isSavingQuestion: false,
+	hasFinishedSaving: false,
+	isQuestionSavedSuccess: false,
+	isQuestionSavedFail: false,
 }
 
 export default function(state=INITIAL_STATE, action) {
 	switch(action.type) {
-		case FETCH_QUESTIONS_START:
+		case Actions.SAVE_QUESTION_START:
+			return {
+				...state,
+				isSavingQuestion: true,
+				hasFinishedSaving: false,
+				isQuestionSavedSuccess: false,
+				isQuestionSavedFail: false,
+			}
+		case Actions.SAVE_QUESTION_SUCCESS:
+			return {
+				...state,
+				isSavingQuestion: false,
+				hasFinishedSaving: true,
+				isQuestionSavedSuccess: true,
+				isQuestionSavedFail: false,
+			}
+		case Actions.SAVE_QUESTION_FAIL:
+			return {
+				...state,
+				isSavingQuestion: false,
+				hasFinishedSaving: true,
+				isQuestionSavedSuccess: false,
+				isQuestionSavedFail: true,
+			}
+		case Actions.SAVE_QUESTION_RESET:
+			return {
+				...state,
+				isSavingQuestion: false,
+				hasFinishedSaving: false,
+				isQuestionSavedSuccess: false,
+				isQuestionSavedFail: false,
+			}
+		case Actions.FETCH_QUESTIONS_START:
 			return {
 				...state,
 				isLoading: true,
@@ -21,7 +53,7 @@ export default function(state=INITIAL_STATE, action) {
 				isFail: false,
 				isSuccess: false,
 			}
-		case FETCH_QUESTIONS_SUCCESS:
+		case Actions.FETCH_QUESTIONS_SUCCESS:
 			const { questions } = action;
 			const byId = Object.assign({}, questions);
 			const ids = Object.keys(questions);
@@ -33,7 +65,7 @@ export default function(state=INITIAL_STATE, action) {
 				byId,
 				ids
 			}
-		case FETCH_QUESTIONS_FAIL:
+		case Actions.FETCH_QUESTIONS_FAIL:
 			const { error } = action;
 			return {
 				...state,

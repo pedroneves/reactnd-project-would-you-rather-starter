@@ -9,7 +9,11 @@ export const FETCH_QUESTIONS_FAIL = 'FETCH_QUESTIONS_FAIL';
 export const CLEAR_QUESTIONS = 'CLEAR_QUESTIONS';
 export const SAVE_ANSWER_START = 'SAVE_ANSWER_START';
 export const SAVE_ANSWER_SUCCESS = 'SAVE_ANSWER_SUCCESS';
-export const SAVE_ANSWER_FAIL = 'SAVE_ANSWER_FAIL'
+export const SAVE_ANSWER_FAIL = 'SAVE_ANSWER_FAIL';
+export const SAVE_QUESTION_START = 'SAVE_QUESTION_START';
+export const SAVE_QUESTION_SUCCESS = 'SAVE_QUESTION_SUCCESS';
+export const SAVE_QUESTION_FAIL = 'SAVE_QUESTION_FAIL';
+export const SAVE_QUESTION_RESET = 'SAVE_QUESTION_RESET';
 
 function fetchQuestions () {
 	return { type: FETCH_QUESTIONS_START }
@@ -46,6 +50,24 @@ function saveAnswerFail ({ error }={}) {
 	}
 }
 
+function saveQuestion () {
+	return {
+		type: SAVE_QUESTION_START
+	}
+}
+
+function saveQuestionSuccess () {
+	return {
+		type: SAVE_QUESTION_SUCCESS
+	}
+}
+
+function saveQuestionFail () {
+	return {
+		type: SAVE_QUESTION_FAIL
+	}
+}
+
 export function handleFetchQuestions () {
 	return (dispatch) => {
 		dispatch(fetchQuestions())
@@ -79,4 +101,25 @@ export function handleSelectAnswer ({ userId, questionId, answerType }) {
 			dispatch(saveAnswerFail({ error }))
 		})
 	}
+}
+
+export function handleCreateQuestion ({ authorId, optionOneText, optionTwoText }) {
+	return dispatch => {
+		dispatch(saveQuestion())
+
+		API.saveQuestion({
+			author: authorId,
+			optionOneText,
+			optionTwoText
+		}).then(() => {
+			dispatch(saveQuestionSuccess())
+			dispatch(handleFetchQuestions())
+		}).catch(() => {
+			dispatch(saveQuestionFail())
+		})
+	}
+}
+
+export function resetSaveQuestion () {
+	return { type: SAVE_QUESTION_RESET }
 }

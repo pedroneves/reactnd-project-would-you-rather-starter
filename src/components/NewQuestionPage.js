@@ -1,12 +1,16 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { Redirect } from 'react-router-dom';
 import { Button, Col, Form, Input, Row } from 'antd';
+
+import { handleCreateQuestion, resetSaveQuestion } from '../actions/questions';
 
 class BaseNewQuestionForm extends Component {
 	renderOption = (type) => {
 		const { getFieldDecorator } = this.props.form;
 		const id = type === 'one' ? 'optionOne' : 'optionTwo';
 		const order = type === 'one' ? 'first' : 'second';
-		const number = type === 'one' ? '1' : '2';
 		const options = {
 			rules: [
 				{ required: true, message: `Please input the ${order} option` },
@@ -14,7 +18,13 @@ class BaseNewQuestionForm extends Component {
 				{ max: 50, message: `Please, create an option with at most 50 chars` }
 			]
 		};
-		const input = (<Input placeholder={`Insert the text of the option ${number}`} />);
+		const { disabled } = this.props;
+		const input = (
+			<Input
+				disabled={disabled}
+				placeholder={`Insert the text of the ${order} option`}
+			/>
+		);
 
 		return getFieldDecorator(id, options)(input)
 	}
@@ -29,9 +39,11 @@ class BaseNewQuestionForm extends Component {
 	}
 
 	render () {
+		const { disabled } = this.props;
+
 		return (
 			<Form onSubmit={this.onSubmit}>
-				<Form.Item >
+				<Form.Item>
 					{ this.renderOption('one')}
 				</Form.Item>
 				<h2 style={{textAlign: 'center'}}>OR</h2>
@@ -39,7 +51,13 @@ class BaseNewQuestionForm extends Component {
 					{ this.renderOption('two')}
 				</Form.Item>
 				<Form.Item>
-					<Button block size="large" type="primary" htmlType="submit">
+					<Button
+						block
+						size="large"
+						type="primary"
+						htmlType="submit"
+						disabled={disabled}
+					>
 						Create!
 					</Button>
 				</Form.Item>
@@ -54,16 +72,30 @@ const NewQuestionForm = Form.create({
 
 class NewQuestionPage extends Component {
 	handleSubmitQuestion = (args) => {
-		console.log(args);
+		const authorId = this.props.authedUser.id;
+		const optionOneText = args.optionOne;
+		const optionTwoText = args.optionTwo;
+		this.props.handleCreateQuestion({ authorId, optionOneText, optionTwoText });
+	}
+
+	componentWillUnmount () {
+		this.props.resetSaveQuestion();
 	}
 
 	render () {
+		if (this.props.hasFinishedSaving && this.props.isQuestionSavedSuccess) {
+			return <Redirect to="/unanswered" />
+		}
+
 		return (
 			<Row>
 				<Col xs={1} sm={4} md={6}></Col>
 				<Col xs={22} sm={16} md={12}>
 					<h1 style={{textAlign: 'center'}}>Would you rather...</h1>
-					<NewQuestionForm submit={this.handleSubmitQuestion}/>
+					<NewQuestionForm
+						submit={this.handleSubmitQuestion}
+						disabled={this.props.isSavingQuestion}
+					/>
 				</Col>
 				<Col xs={1} sm={4} md={6}></Col>
 			</Row>
@@ -71,4 +103,30 @@ class NewQuestionPage extends Component {
 	}
 }
 
-export default NewQuestionPage;
+function mapStateToProps (state) {
+	const {
+		isSavingQuestion,
+		hasFinishedSaving,
+		isQuestionSavedSuccess,
+		isQuestionSavedFail
+	} = state.questions;
+
+	const { authedUser } = state
+
+	return {
+		authedUser,
+		isSavingQuestion,
+		hasFinishedSaving,
+		isQuestionSavedSuccess,
+		isQuestionSavedFail
+	};
+}
+
+function mapDispatchToProps (dispatch) {
+	return bindActionCreators({
+		handleCreateQuestion,
+		resetSaveQuestion
+	}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewQuestionPage);
