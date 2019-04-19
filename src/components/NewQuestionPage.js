@@ -14,7 +14,7 @@ class BaseNewQuestionForm extends Component {
 		const options = {
 			rules: [
 				{ required: true, message: `Please input the ${order} option` },
-				{ min: 3, message: `Please, create an option with at least 3 chars` },
+				{ min: 1, message: `Please, create an option with at least 3 chars` },
 				{ max: 50, message: `Please, create an option with at most 50 chars` }
 			]
 		};

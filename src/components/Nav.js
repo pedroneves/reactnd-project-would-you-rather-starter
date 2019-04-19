@@ -5,25 +5,26 @@ import '../styles/nav.css';
 
 class Nav extends Component {
 	render() {
-		const sections = [
-			{ name: "Unanswered", path: "/unanswered" },
-			{ name: "Answered", path: "/answered" },
-			{ name: "New", path: "/add" },
-			{ name: "Leaderboard", path: "/leaderboard" }
-		];
+		const { sections } = this.props;
 
 		return (
 			<div className="nav">
 				{
 					sections.map(section => {
+						const { selectedIf = [] } = section;
 						const classes = ['nav-button'];
 
-						if (this.props.location.pathname === section.path) {
+						const locationPath = this.props.location.pathname;
+						const isLocationPathEqualsToPath = locationPath === section.path;
+						const isSelectedIfEqualToPath = selectedIf.includes(locationPath);
+						const isSelected = isLocationPathEqualsToPath || isSelectedIfEqualToPath;
+
+						if (isSelected) {
 							classes.push('nav-selected');
 						}
 
 						return (
-							<Link className={classes.join(' ')} to={section.path}>
+							<Link key={section.name} className={classes.join(' ')} to={section.path}>
 								{section.name}
 							</Link>
 						)

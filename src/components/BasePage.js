@@ -6,11 +6,9 @@ import { Row, Col, Icon, Spin, Button } from 'antd';
 
 import Nav from './Nav';
 import QuestionPage from './QuestionPage';
-import AnsweredPage from './AnsweredPage';
-import UnansweredPage from './UnansweredPage';
+import HomePage from './HomePage';
 import NewQuestionPage from './NewQuestionPage';
 import LeaderboardPage from './LeaderboardPage';
-import NotFoundPage from './NotFoundPage';
 
 import { handleGetUsers } from '../actions/users';
 import { handleSignOut } from '../actions/authed-user';
@@ -22,12 +20,6 @@ class BasePage extends Component {
 	componentDidMount () {
 		this.props.fetchUsers();
 		this.props.fetchQuestions();
-	}
-
-	parseQuestion = (question) => {
-		const clone = Object.assign({}, question);
-		clone.author = Object.assign({}, this.props.users.byId[question.author]);
-		return clone;
 	}
 
 	handleSignOut = (event) => {
@@ -44,6 +36,28 @@ class BasePage extends Component {
 		);
 	}
 
+	renderHome = () => {
+		return (
+			<HomePage
+				users={this.props.users}
+				questions={this.props.questions}
+				authedUser={this.props.authedUser}
+			/>
+		)
+	}
+
+	renderNav () {
+		const sections = [
+			{ name: 'Home', path: '/', selectedIf: ['/', '/answered', '/unanswered']},
+			{ name: 'New', path: '/add' },
+			{ name: 'Leaderboard', path: '/leaderboard' }
+		];
+
+		return (
+			<Nav sections={sections} />
+		)
+	}
+
 	renderSubsection () {
 		const isUsersLoaded = this.props.users.isSuccess;
 		const isQuestionsLoaded = this.props.questions.isSuccess;
@@ -53,41 +67,14 @@ class BasePage extends Component {
 			return (
 				<Switch>
 					<Route exact path='/question/:id' component={QuestionPage} />
-					<Route exact path='/unanswered' render={this.renderUnansweredPage} />
-					<Route exact path='/answered' render={this.renderAnsweredPage} />
-					<Route exact path='/add' render={this.renderNewQuestionPage} />
+					<Route exact path='/add' component={NewQuestionPage} />
 					<Route exact path='/leaderboard' component={LeaderboardPage} />
-					<Route exact path='/' component={this.renderUnansweredPage} />
-					<Route path='/' component={NotFoundPage} />
+					<Route path='/' render={this.renderHome} />
 				</Switch>
 			)
 		}
 
 		return this.renderLoadingIcon()
-	}
-
-	renderUnansweredPage = () => {
-		const answeredIds = Object.keys(this.props.authedUser.answers);
-		const unanswered = Object.values(this.props.questions.byId)
-			.filter(question => !answeredIds.includes(question.id))
-			.map(this.parseQuestion)
-			.sort((a, b) => b.timestamp - a.timestamp)
-
-		return <UnansweredPage questions={unanswered} />
-	}
-
-	renderAnsweredPage = () => {
-		const answeredIds = Object.keys(this.props.authedUser.answers);
-		const answered = Object.values(this.props.questions.byId)
-			.filter(question => answeredIds.includes(question.id))
-			.map(this.parseQuestion)
-			.sort((a, b) => b.timestamp - a.timestamp)
-
-		return <AnsweredPage questions={answered} />
-	}
-
-	renderNewQuestionPage = () => {
-		return <NewQuestionPage />
 	}
 
 	render () {
@@ -107,7 +94,7 @@ class BasePage extends Component {
 
 				<Row>
 					<Col span={16} offset={4}>
-						<Nav />
+						{this.renderNav()}
 					</Col>
 				</Row>
 
