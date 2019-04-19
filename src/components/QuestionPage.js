@@ -12,6 +12,10 @@ class QuestionPage extends Component {
 	render () {
 		const questionId = this.props.match.params.id;
 
+		if (!this.props.questions.byId[questionId]) {
+			return <h1 style={{textAlign: 'center'}}>Question "{questionId}" not found :(</h1>
+		}
+
 		const question = Object.assign({}, this.props.questions.byId[questionId]);
 		const author = Object.assign({}, this.props.users.byId[question.author]);
 		const vote = this.props.authedUser.answers[questionId];
