@@ -18,7 +18,7 @@ class Nav extends Component {
 					<Link to="/add">New</Link>
 				</Col>
 				<Col style={style} >
-					<p>Leaderboard</p>
+					<Link to="/leaderboard">Leaderboard</Link>
 				</Col>
 			</Row>
 		)

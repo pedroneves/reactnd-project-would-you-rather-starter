@@ -9,6 +9,7 @@ import QuestionPage from './QuestionPage';
 import AnsweredPage from './AnsweredPage';
 import UnansweredPage from './UnansweredPage';
 import NewQuestionPage from './NewQuestionPage';
+import LeaderboardPage from './LeaderboardPage';
 import NotFoundPage from './NotFoundPage';
 
 import { handleGetUsers } from '../actions/users';
@@ -55,6 +56,7 @@ class BasePage extends Component {
 					<Route exact path='/unanswered' render={this.renderUnansweredPage} />
 					<Route exact path='/answered' render={this.renderAnsweredPage} />
 					<Route exact path='/add' render={this.renderNewQuestionPage} />
+					<Route exact path='/leaderboard' component={LeaderboardPage} />
 					<Route exact path='/' component={this.renderUnansweredPage} />
 					<Route path='/' component={NotFoundPage} />
 				</Switch>
