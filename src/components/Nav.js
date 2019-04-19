@@ -1,28 +1,37 @@
-import { Row, Col } from 'antd';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
+import '../styles/nav.css';
 
 class Nav extends Component {
 	render() {
-		const style = { textAlign: 'center' }
+		const sections = [
+			{ name: "Unanswered", path: "/unanswered" },
+			{ name: "Answered", path: "/answered" },
+			{ name: "New", path: "/add" },
+			{ name: "Leaderboard", path: "/leaderboard" }
+		];
 
 		return (
-			<Row style={{marginTop: '20px', marginBottom: '20px'}} type="flex" justify="space-around">
-				<Col style={style} >
-					<Link to="/unanswered">Unanswered</Link>
-				</Col>
-				<Col style={style} >
-					<Link to="/answered">Answered</Link>
-				</Col>
-				<Col style={style} >
-					<Link to="/add">New</Link>
-				</Col>
-				<Col style={style} >
-					<Link to="/leaderboard">Leaderboard</Link>
-				</Col>
-			</Row>
+			<div className="nav">
+				{
+					sections.map(section => {
+						const classes = ['nav-button'];
+
+						if (this.props.location.pathname === section.path) {
+							classes.push('nav-selected');
+						}
+
+						return (
+							<Link className={classes.join(' ')} to={section.path}>
+								{section.name}
+							</Link>
+						)
+					})
+				}
+			</div>
 		)
 	}
 }
 
-export default Nav;
+export default withRouter(Nav);

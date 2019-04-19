@@ -106,7 +106,7 @@ class BasePage extends Component {
 				</Row>
 
 				<Row>
-					<Col span={10} offset={7}>
+					<Col span={16} offset={4}>
 						<Nav />
 					</Col>
 				</Row>
